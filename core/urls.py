@@ -11,28 +11,14 @@ from drf_spectacular.views import (
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path(
-        'swagger/',
-        SpectacularSwaggerView.as_view(
-            url_name='schema' if settings.DEBUG else None,
-            url=None if settings.DEBUG else '/back_static/schema.yml',
-        ),
-        name='swagger-ui',
-    ),
-    path(
-        'redoc/',
-        SpectacularRedocView.as_view(
-            url_name='schema' if settings.DEBUG else None,
-            url=None if settings.DEBUG else '/back_static/schema.yml',
-        ),
-        name='redoc',
-    ),
+    path('api/v1/', include('apps.home_street.urls')),
     path('api/v1/users/', include('apps.users.urls')),
-    path('api/v1/home-street/', include('apps.home_street.urls')),
+    path('api/schema/', SpectacularAPIView.as_view(), name='schema'),
+    path('api/docs/', SpectacularSwaggerView.as_view(url_name='schema'), name='swagger-ui'),
+    path('api/redoc/', SpectacularRedocView.as_view(url_name='schema'), name='redoc'),
+    path('swagger/', SpectacularSwaggerView.as_view(url_name='schema'), name='swagger-root'),
+    path('redoc/', SpectacularRedocView.as_view(url_name='schema'), name='redoc-root'),
 ]
-
-if settings.DEBUG:
-    urlpatterns.insert(1, path('schema/', SpectacularAPIView.as_view(), name='schema'))
 
 if settings.DEBUG:
     urlpatterns += (

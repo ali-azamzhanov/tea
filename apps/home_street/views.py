@@ -7,8 +7,15 @@ from rest_framework.permissions import AllowAny
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
-from .models import News, Program, UsefulLink
-from .serializers import NewsSerializer, ProgramSerializer, UsefulLinkSerializer
+from .models import (
+    News, Menu, Settings, Home, About, AboutExtra,
+    Subject, SubjectSection, History, Review, Gallery, HeaderFooterSettings
+)
+from .serializers import (
+    NewsSerializer, MenuSerializer, SettingsSerializer, HomeSerializer,
+    AboutSerializer, AboutExtraSerializer, SubjectSerializer, SubjectSectionSerializer,
+    HistorySerializer, ReviewSerializer, GallerySerializer, HeaderFooterSettingsSerializer
+)
 
 
 class NewsListCreateView(generics.ListCreateAPIView):
@@ -17,15 +24,135 @@ class NewsListCreateView(generics.ListCreateAPIView):
     permission_classes = [AllowAny]
 
 
-class ProgramListCreateView(generics.ListCreateAPIView):
-    queryset = Program.objects.order_by('-created_at')
-    serializer_class = ProgramSerializer
+class NewsDetailView(generics.RetrieveUpdateDestroyAPIView):
+    queryset = News.objects.all()
+    serializer_class = NewsSerializer
     permission_classes = [AllowAny]
 
 
-class UsefulLinkListCreateView(generics.ListCreateAPIView):
-    queryset = UsefulLink.objects.order_by('-created_at')
-    serializer_class = UsefulLinkSerializer
+class MenuListCreateView(generics.ListCreateAPIView):
+    queryset = Menu.objects.all()
+    serializer_class = MenuSerializer
+    permission_classes = [AllowAny]
+
+
+class MenuDetailView(generics.RetrieveUpdateDestroyAPIView):
+    queryset = Menu.objects.all()
+    serializer_class = MenuSerializer
+    permission_classes = [AllowAny]
+
+
+class SettingsDetailView(generics.RetrieveUpdateAPIView):
+    queryset = Settings.objects.all()
+    serializer_class = SettingsSerializer
+    permission_classes = [AllowAny]
+
+
+class HomeListCreateView(generics.ListCreateAPIView):
+    queryset = Home.objects.filter(is_active=True)
+    serializer_class = HomeSerializer
+    permission_classes = [AllowAny]
+
+
+class HomeDetailView(generics.RetrieveUpdateDestroyAPIView):
+    queryset = Home.objects.all()
+    serializer_class = HomeSerializer
+    permission_classes = [AllowAny]
+
+
+class AboutListCreateView(generics.ListCreateAPIView):
+    queryset = About.objects.all()
+    serializer_class = AboutSerializer
+    permission_classes = [AllowAny]
+
+
+class AboutDetailView(generics.RetrieveUpdateDestroyAPIView):
+    queryset = About.objects.all()
+    serializer_class = AboutSerializer
+    permission_classes = [AllowAny]
+
+
+class AboutExtraListCreateView(generics.ListCreateAPIView):
+    queryset = AboutExtra.objects.all()
+    serializer_class = AboutExtraSerializer
+    permission_classes = [AllowAny]
+
+
+class AboutExtraDetailView(generics.RetrieveUpdateDestroyAPIView):
+    queryset = AboutExtra.objects.all()
+    serializer_class = AboutExtraSerializer
+    permission_classes = [AllowAny]
+
+
+class SubjectListCreateView(generics.ListCreateAPIView):
+    queryset = Subject.objects.order_by('order')
+    serializer_class = SubjectSerializer
+    permission_classes = [AllowAny]
+
+
+class SubjectDetailView(generics.RetrieveUpdateDestroyAPIView):
+    queryset = Subject.objects.all()
+    serializer_class = SubjectSerializer
+    permission_classes = [AllowAny]
+
+
+class SubjectSectionListCreateView(generics.ListCreateAPIView):
+    queryset = SubjectSection.objects.all()
+    serializer_class = SubjectSectionSerializer
+    permission_classes = [AllowAny]
+
+
+class SubjectSectionDetailView(generics.RetrieveUpdateDestroyAPIView):
+    queryset = SubjectSection.objects.all()
+    serializer_class = SubjectSectionSerializer
+    permission_classes = [AllowAny]
+
+
+class HistoryListCreateView(generics.ListCreateAPIView):
+    queryset = History.objects.order_by('order')
+    serializer_class = HistorySerializer
+    permission_classes = [AllowAny]
+
+
+class HistoryDetailView(generics.RetrieveUpdateDestroyAPIView):
+    queryset = History.objects.all()
+    serializer_class = HistorySerializer
+    permission_classes = [AllowAny]
+
+
+class ReviewListCreateView(generics.ListCreateAPIView):
+    queryset = Review.objects.filter(is_active=True).order_by('-created_at')
+    serializer_class = ReviewSerializer
+    permission_classes = [AllowAny]
+
+
+class ReviewDetailView(generics.RetrieveUpdateDestroyAPIView):
+    queryset = Review.objects.all()
+    serializer_class = ReviewSerializer
+    permission_classes = [AllowAny]
+
+
+class GalleryListCreateView(generics.ListCreateAPIView):
+    queryset = Gallery.objects.order_by('order')
+    serializer_class = GallerySerializer
+    permission_classes = [AllowAny]
+
+
+class GalleryDetailView(generics.RetrieveUpdateDestroyAPIView):
+    queryset = Gallery.objects.all()
+    serializer_class = GallerySerializer
+    permission_classes = [AllowAny]
+
+
+class HeaderFooterSettingsListCreateView(generics.ListCreateAPIView):
+    queryset = HeaderFooterSettings.objects.all()
+    serializer_class = HeaderFooterSettingsSerializer
+    permission_classes = [AllowAny]
+
+
+class HeaderFooterSettingsDetailView(generics.RetrieveUpdateDestroyAPIView):
+    queryset = HeaderFooterSettings.objects.all()
+    serializer_class = HeaderFooterSettingsSerializer
     permission_classes = [AllowAny]
 
 
@@ -34,8 +161,15 @@ class ModelSearchView(APIView):
 
     _models = {
         'news': (News, NewsSerializer, ['title', 'body']),
-        'program': (Program, ProgramSerializer, ['name', 'description']),
-        'usefullink': (UsefulLink, UsefulLinkSerializer, ['title', 'description']),
+        'menu': (Menu, MenuSerializer, ['title']),
+        'home': (Home, HomeSerializer, ['title', 'subtitle']),
+        'about': (About, AboutSerializer, ['title', 'description']),
+        'aboutextra': (AboutExtra, AboutExtraSerializer, ['title', 'description']),
+        'subject': (Subject, SubjectSerializer, ['title', 'description']),
+        'subjectsection': (SubjectSection, SubjectSectionSerializer, ['title']),
+        'history': (History, HistorySerializer, ['title', 'description']),
+        'review': (Review, ReviewSerializer, ['name', 'text']),
+        'gallery': (Gallery, GallerySerializer, ['title', 'description']),
     }
 
     @staticmethod
