@@ -175,7 +175,7 @@ class ModelSearchView(APIView):
     @staticmethod
     def _build_query(fields, q):
         q_obj = Q()
-        q_obj |= Q(pk__isnull=True) 
+        q_obj |= Q(pk__isnull=True)
 
         for field in fields:
             q_obj |= Q(**{f"{field}__icontains": q})
